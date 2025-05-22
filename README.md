@@ -17,7 +17,7 @@ A command-line tool that converts images to colored ASCII art displayed in the t
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/ImageToAscii.git
+   git clone https://github.com/theblackcat98/ImageToAscii.git
    cd ImageToAscii
    ```
 
