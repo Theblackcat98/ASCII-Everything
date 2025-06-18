@@ -14,6 +14,11 @@ function drawNode(canvas: Canvas, node: AsciiNode) {
 function drawEdge(canvas: Canvas, edge: AsciiEdge) {
   if (!edge.points || edge.points.length < 2) return;
 
+  // HACK: Temporary log to debug upward edges
+  if (edge.points[edge.points.length - 1].y < edge.points[0].y) {
+    console.log(`DEBUG: Upward edge points for ${edge.from} -> ${edge.to}:`, JSON.stringify(edge.points, null, 2));
+  }
+
   // Draw line segments
   for (let i = 0; i < edge.points.length - 1; i++) {
     const start = edge.points[i];
@@ -52,7 +57,7 @@ function getCornerChar(prev: {x: number, y: number}, curr: {x: number, y: number
     if (dx2 > 0) return '└';
     if (dx2 < 0) return '┘';
   } else if (dy1 === 0 && dx1 > 0) { // From Left
-    if (dy2 > 0) return '┐';
+    if (dy2 > 0) return '┌';
     if (dy2 < 0) return '┘';
   } else if (dy1 === 0 && dx1 < 0) { // From Right
     if (dy2 > 0) return '┌';

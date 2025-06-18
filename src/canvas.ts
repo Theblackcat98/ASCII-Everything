@@ -100,12 +100,12 @@ export class Canvas {
     const sy = y0 < y1 ? 1 : -1;
 
     if (dx === 0) { // Vertical line
-      for (let y = y0; y !== y1; y += sy) {
+      for (let y = y0; y !== y1 + sy; y += sy) {
         const existing = this.getChar(x0, y);
         this.setChar(x0, y, lineChars.vertical[existing] || '│');
       }
     } else if (dy === 0) { // Horizontal line
-      for (let x = x0; x !== x1; x += sx) {
+      for (let x = x0; x !== x1 + sx; x += sx) {
         const existing = this.getChar(x, y0);
         this.setChar(x, y0, lineChars.horizontal[existing] || '─');
       }
