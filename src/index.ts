@@ -29,19 +29,18 @@ const program = new Command();
 program
   .version('0.1.0')
   .description('A CLI tool to render MermaidJS diagrams as ASCII art')
-  .option('-i, --input <file>', 'Input Mermaid .mmd file path')
+  .argument('<file>', 'Input Mermaid .mmd file path')
   .parse(process.argv);
 
-const options = program.opts();
-
 async function main() {
-  if (!options.input) {
-    console.error('Error: Input file must be specified with -i or --input.');
+  const inputFile = program.args[0];
+  if (!inputFile) {
+    console.error('Error: Input file must be specified.');
     program.help();
     process.exit(1);
   }
 
-  const filePath = resolve(process.cwd(), options.input);
+  const filePath = resolve(process.cwd(), inputFile);
   const fileContent = readFileSync(filePath, 'utf-8');
 
   // 1. Parse the Mermaid source into our intermediate representation
@@ -57,4 +56,7 @@ async function main() {
   console.log(asciiArt);
 }
 
-main();
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
