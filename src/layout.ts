@@ -1,31 +1,56 @@
 import { AsciiGraph } from './types';
+import dagre from 'dagre';
 
 const PADDING = 2; // Horizontal padding inside a node
-const NODE_SPACING_Y = 2; // Vertical spacing between nodes
 
 /**
- * Calculates the size of each node and assigns its (x, y) coordinates.
- *
- * NOTE: This is a placeholder layout engine. A real implementation would use
- * a proper graph layout algorithm (e.g., Sugiyama/layered graph drawing).
- * This version simply stacks all nodes vertically for demonstration.
+ * Calculates the size of each node and assigns its (x, y) coordinates
+ * using the Dagre layout engine.
  */
 export function layoutGraph(graph: AsciiGraph): AsciiGraph {
-  let currentY = 1; // Start with a 1-char margin at the top
+  const g = new dagre.graphlib.Graph();
+  g.setGraph({
+    rankdir: 'TB',
+    marginx: 2,
+    marginy: 2,
+    nodesep: 5,
+    edgesep: 2,
+    ranksep: 5,
+  });
+  g.setDefaultEdgeLabel(() => ({}));
 
-  // Calculate size for each node
+  // Calculate size for each node and add to Dagre graph
   graph.nodes.forEach(node => {
     node.width = node.text.length + PADDING * 2;
     // Rectangles are 3 lines high, Rhombus are 5 for a nice shape
-    node.height = node.shape === 'rhombus' ? 5 : 3;
+    node.height = 3;
+    g.setNode(node.id, { width: node.width, height: node.height });
   });
 
-  // Position nodes
-  graph.nodes.forEach(node => {
-    // Center all nodes horizontally for this simple layout
-    node.x = 10;
-    node.y = currentY;
-    currentY += node.height + NODE_SPACING_Y;
+  // Add edges to Dagre graph
+  graph.edges.forEach(edge => {
+    g.setEdge(edge.from, edge.to);
+  });
+
+  // Run layout
+  dagre.layout(g);
+
+  // Update our graph with the new layout information
+  g.nodes().forEach(nodeId => {
+    const dagreNode = g.node(nodeId);
+    const ourNode = graph.nodes.get(nodeId);
+    if (ourNode) {
+      ourNode.x = Math.round(dagreNode.x - dagreNode.width / 2);
+      ourNode.y = Math.round(dagreNode.y - dagreNode.height / 2);
+    }
+  });
+
+  g.edges().forEach(edgeId => {
+    const dagreEdge = g.edge(edgeId);
+    const ourEdge = graph.edges.find(e => e.from === edgeId.v && e.to === edgeId.w);
+    if (ourEdge) {
+      ourEdge.points = dagreEdge.points.map(p => ({ x: Math.round(p.x), y: Math.round(p.y) }));
+    }
   });
 
   return graph;

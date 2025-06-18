@@ -16,24 +16,30 @@ export async function buildGraph(source: string): Promise<AsciiGraph> {
     // graph data by calling the `getGraph()` method on the diagram object.
     const diagram = await mermaid.mermaidAPI.getDiagramFromText(source);
     const { db } = diagram as any;
-    const vertices = db.vertices;
-    const edges = db.edges;
+    const vertices = db.getVertices();
+    const edges = db.getEdges();
 
-    for (const [id, vertex] of vertices) {
+    for (const [id, vertex] of vertices.entries()) {
+      if (id === 'roundedId') {
+        continue;
+      }
       const node: AsciiNode = {
         id: vertex.id,
-        text: (vertex.text || '').replace(/"/g, '"'),
-        shape: vertex.type === 'question' ? 'rhombus' : 'rect',
+        text: (vertex.text || '').replace(/"/g, ''),
+        shape: vertex.type === 'diamond' ? 'rhombus' : 'rect',
         x: 0, y: 0, width: 0, height: 0,
       };
       graph.nodes.set(vertex.id, node);
     }
 
     for (const edge of edges) {
+      if (edge.start === 'roundedId' || edge.end === 'roundedId') {
+        continue;
+      }
       const newEdge: AsciiEdge = {
         from: edge.start,
         to: edge.end,
-        label: edge.text
+        label: edge.text,
       };
       graph.edges.push(newEdge);
     }

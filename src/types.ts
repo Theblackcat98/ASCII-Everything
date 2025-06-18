@@ -17,6 +17,8 @@ export interface AsciiEdge {
   from: string; // Node ID
   to: string;   // Node ID
   label?: string;
+  // Populated by the layout engine
+  points?: { x: number; y: number }[];
 }
 
 export interface AsciiGraph {
