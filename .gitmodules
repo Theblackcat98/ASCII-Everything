@@ -1,0 +1,6 @@
+[submodule "ImageToAscii"]
+	path = ImageToAscii
+	url = https://github.com/Theblackcat98/ImageToAscii.git
+[submodule "mermaidcli"]
+	path = mermaidcli
+	url = git@github.com:Theblackcat98/mermaidCLI.git
