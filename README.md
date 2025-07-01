@@ -13,6 +13,10 @@ A command-line tool that converts images to colored ASCII art displayed in the t
 - **New**: Properly handle transparent backgrounds
 - **New**: Fix white background handling with invert option
 
+## Showcase
+
+![Showcase](assets/imagetoascii.gif)
+
 ## Installation
 
 1. Clone this repository:
