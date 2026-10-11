@@ -10,10 +10,10 @@ A collection of ASCII art projects.
 
 ### Image to ASCII
 
-![Image to ASCII](./ImageToAscii/assets/imagetoascii.gif)
+![Image to ASCII](https://raw.githubusercontent.com/Theblackcat98/ImageToAscii/main/assets/imagetoascii.gif)
 
 ### Mermaid CLI
 
-![Pocket Flow](./mermaidcli/assets/pocketflow-dmm.gif)
-![Sequence Diagram](./mermaidcli/assets/sequence-dmm.gif)
-![State Diagram](./mermaidcli/assets/state-dmm.gif)
+![Pocket Flow](https://raw.githubusercontent.com/Theblackcat98/mermaidCLI/main/assets/pocketflow-dmm.gif)
+![Sequence Diagram](https://raw.githubusercontent.com/Theblackcat98/mermaidCLI/main/assets/sequence-dmm.gif)
+![State Diagram](https://raw.githubusercontent.com/Theblackcat98/mermaidCLI/main/assets/state-dmm.gif)
