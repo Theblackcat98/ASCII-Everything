@@ -1,0 +1,2 @@
+pillow>=10.2.0  # For image processing
+colorama==0.4.6  # For terminal colors 
