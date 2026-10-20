@@ -1,0 +1,6 @@
+flowchart TD
+    roundedId("label") --> A
+    A["Start"] --> B{"Is it working?"}
+    B -- Yes --> C["End"]
+    B -- No --> D["Check Logs"]
+    D --> B
