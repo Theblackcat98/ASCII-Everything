@@ -35,6 +35,16 @@ node mermaidcli/src/cli/index.js diagram.mmd
 
 See [`mermaidcli/README.md`](mermaidcli/README.md) for architecture and options.
 
+### Mermaid ASCII CLI (TypeScript) — [`mermaid-ascii-cli/`](mermaid-ascii-cli/)
+
+A second, independent mermaid-to-ASCII implementation in TypeScript: it uses the real `mermaid` parser plus `dagre` for graph layout and renders flowcharts as Unicode box art. Work in progress — node layout works, edge routing is still rough (see its `plan.md`).
+
+```bash
+cd mermaid-ascii-cli
+npm ci
+npx ts-node --transpile-only src/index.ts diagram.mmd
+```
+
 ### Abstract JS — [`abstract JS/`](abstract%20JS/)
 
 Terminal ambient visuals and experiments in JavaScript: fluid, ambient light, chaos, cubes, and waves.
@@ -44,4 +54,5 @@ Terminal ambient visuals and experiments in JavaScript: fluid, ambient light, ch
 `ImageToAscii` and `mermaidCLI` started as standalone repositories. They were
 linked here as git submodules, then merged into this repo outright on
 2026-10-20 — full commit history preserved — so ASCII-Everything is
-self-contained.
+self-contained. The private TypeScript `mermaid-ascii-cli` was merged in the
+same day, also with its history.
