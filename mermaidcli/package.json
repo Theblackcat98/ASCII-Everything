@@ -1,0 +1,19 @@
+{
+  "name": "mermaidcli",
+  "version": "1.0.0",
+  "description": "This is a CLI tool to render Mermaid diagrams as ASCII art in the terminal.",
+  "main": "gem-mermaidcli.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jest": "^30.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

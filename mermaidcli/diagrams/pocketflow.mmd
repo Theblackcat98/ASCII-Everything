@@ -1,0 +1,125 @@
+stateDiagram-v2
+    [*] --> Initial_Input
+    
+    state Initial_Input {
+        [*] --> gathering_files
+        gathering_files : Collect source code files
+        gathering_files : Get project name and language
+        gathering_files : Set output directory
+        gathering_files --> [*]
+    }
+    
+    Initial_Input --> IdentifyAbstractions_State
+    
+    state IdentifyAbstractions_State {
+        [*] --> prep_abstractions
+        prep_abstractions : Read files, project_name, language
+        prep_abstractions : Prepare LLM context
+        prep_abstractions --> exec_abstractions
+        
+        exec_abstractions : LLM Task Find key abstractions
+        exec_abstractions : Input Source code + context
+        exec_abstractions : Output YAML list of abstractions
+        exec_abstractions --> post_abstractions
+        
+        post_abstractions : Store abstractions in shared_data
+        post_abstractions : Validate YAML structure
+        post_abstractions --> [*]
+    }
+    
+    IdentifyAbstractions_State --> AnalyzeRelationships_State
+    
+    state AnalyzeRelationships_State {
+        [*] --> prep_relationships
+        prep_relationships : Read abstractions + source files
+        prep_relationships : Prepare combined context
+        prep_relationships --> exec_relationships
+        
+        exec_relationships : LLM Task Analyze relationships
+        exec_relationships : Input Abstractions + code
+        exec_relationships : Output YAML with relationships
+        exec_relationships --> post_relationships
+        
+        post_relationships : Store relationships in shared_data
+        post_relationships : Include summary and mapping
+        post_relationships --> [*]
+    }
+    
+    AnalyzeRelationships_State --> OrderChapters_State
+    
+    state OrderChapters_State {
+        [*] --> prep_ordering
+        prep_ordering : Read abstractions + relationships
+        prep_ordering : Prepare logical structure
+        prep_ordering --> exec_ordering
+        
+        exec_ordering : LLM Task Determine learning order
+        exec_ordering : Input All abstractions + relationships
+        exec_ordering : Output YAML ordered indices
+        exec_ordering --> post_ordering
+        
+        post_ordering : Store chapter_order in shared_data
+        post_ordering : Validate completeness
+        post_ordering --> [*]
+    }
+    
+    OrderChapters_State --> WriteChapters_State
+    
+    state WriteChapters_State {
+        [*] --> prep_writing
+        prep_writing : Read chapter_order + abstractions
+        prep_writing : Create chapter item list
+        prep_writing : Initialize chapters_written_so_far
+        prep_writing --> writing_loop
+        
+        state writing_loop {
+            [*] --> exec_chapter
+            exec_chapter : LLM Task Write tutorial chapter
+            exec_chapter : Input Topic + previous summaries
+            exec_chapter : Output Full markdown chapter
+            exec_chapter --> update_context
+            
+            update_context : Summarize new chapter
+            update_context : Add to chapters_written_so_far
+            update_context --> check_more
+            
+            check_more : More chapters?
+            check_more --> exec_chapter : Yes
+            check_more --> [*] : No
+        }
+        
+        writing_loop --> post_writing
+        post_writing : Store chapters in shared_data
+        post_writing : Cleanup temporary variables
+        post_writing --> [*]
+    }
+    
+    WriteChapters_State --> CombineTutorial_State
+    
+    state CombineTutorial_State {
+        [*] --> prep_final
+        prep_final : Read ALL accumulated data
+        prep_final : Create index.md structure
+        prep_final : Prepare file list with content
+        prep_final --> exec_final
+        
+        exec_final : Write index.md to filesystem
+        exec_final : Write all chapter files
+        exec_final : Create proper linking structure
+        exec_final --> post_final
+        
+        post_final : Store final_output_dir
+        post_final : Print completion message
+        post_final --> [*]
+    }
+    
+    CombineTutorial_State --> Tutorial_Complete
+    
+    state Tutorial_Complete {
+        complete : Complete tutorial ready
+        complete : Index page with overview
+        complete : Ordered chapters with examples
+        complete : Proper attribution and links
+    }
+    
+    Tutorial_Complete --> [*]
